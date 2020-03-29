@@ -1,48 +1,29 @@
-# FROM node:10-alpine as Build
-
-# RUN mkdir -p /build/client
-
-# COPY client/package.json /build/client
-# COPY client/yarn.lock /build/client
-
-# WORKDIR /build/client
-
-# RUN yarn install --production=true
-
-# COPY client /build/client
-
-# RUN yarn build
-
-# RUN mkdir -p /build/server
-
-# COPY server/package.json /build/server
-# COPY server/yarn.lock /build/server
-
-# WORKDIR /build/server
-
-# RUN yarn install 
-
-# COPY server /build/server
-
-# RUN yarn build
-
-# WORKDIR /build/server/build
-
-# EXPOSE 5000
-
-# CMD ["node", "server.js"]
-
-FROM node:alpine 
+FROM node:12-alpine AS BUILD_IMAGE
 COPY . /app
 
 WORKDIR /app/client
 
-RUN yarn install --no-cache && yarn run build && yarn global add serve
+RUN yarn install --no-cache --production=true && yarn run build 
 
 WORKDIR /app/server
 RUN yarn install
+
+
+
+FROM node:12-alpine
+
+WORKDIR /app/client
+
+COPY --from=BUILD_IMAGE /app/client/build ./build
+COPY --from=BUILD_IMAGE /app/client/node_modules ./node_modules
+
+WORKDIR /app/server
+
+COPY --from=BUILD_IMAGE /app/server .
+
+
 EXPOSE 5000
-CMD ["yarn", "start", "server.js"]
+CMD ["node", "server.js"]
 
 
 
