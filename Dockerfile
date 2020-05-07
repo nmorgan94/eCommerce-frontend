@@ -23,7 +23,7 @@ COPY --from=BUILD_IMAGE /app/server .
 
 
 EXPOSE 5000
-CMD ["node", "server.js"]
+CMD ["npm", "start"]
 
 
 

@@ -8,6 +8,6 @@
     "express": "^4.17.1"
   },
   "scripts": {
-    "build": "npx tsc"
+    "build": "node server.js"
   }
 }
