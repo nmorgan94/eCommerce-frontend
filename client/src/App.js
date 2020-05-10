@@ -2,31 +2,43 @@ import React, { useEffect } from "react";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import HomePage from "./pages/HomePage";
-import { Route, Switch, withRouter } from "react-router-dom";
+import BasketPage from "./pages/BasketPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
+import CheckoutPage from "./pages/CheckoutPage";
 
-let environment = process.env.REACT_APP_ENVIRONMENT || "local";
-let API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "localhost";
-let API_BASE_PORT = process.env.REACT_APP_API_PORT || "5000";
+import { Route } from "react-router-dom";
 
 function App() {
-  // useEffect(() => {}, []);
-
-  // const getProducts = () => {
-  //   console.log("about to call products");
-  //   fetch("/products")
-  //     .then((res) => res.text())
-  //     .then((text) => console.log(text))
-  //     .catch(() => console.log("Products api call failed"));
-  // };
-
   return (
-    <div className="App">
+    <>
       <Navbar />
 
-      <Switch>
-        <Route exact path="/" component={HomePage} />
-      </Switch>
-    </div>
+      <Route exact path="/">
+        <HomePage />
+      </Route>
+
+      <Route path="/basket">
+        <BasketPage />
+      </Route>
+
+      <Route path="/products/:id">
+        <ProductDetailPage />
+      </Route>
+
+      <Route path="/login">
+        <LoginPage />
+      </Route>
+
+      <Route path="/signup">
+        <SignupPage />
+      </Route>
+
+      <Route path="/checkout">
+        <CheckoutPage />
+      </Route>
+    </>
   );
 }
 
