@@ -14,7 +14,7 @@ FROM node:12-alpine
 
 WORKDIR /app/client
 
-COPY --from=BUILD_IMAGE /app/client/build ./build
+COPY --from=BUILD_IMAGE /app/client/build .
 COPY --from=BUILD_IMAGE /app/client/node_modules ./node_modules
 
 WORKDIR /app/server
