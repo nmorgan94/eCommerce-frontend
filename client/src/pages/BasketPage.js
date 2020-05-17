@@ -1,14 +1,11 @@
 import React, { useEffect } from "react";
 import { observer, inject } from "mobx-react";
-import Cookies from "universal-cookie";
-
-const cookies = new Cookies();
 
 const BasketPage = inject("dataStore")(
   observer(({ dataStore }) => {
     useEffect(() => {
       dataStore.getBasket();
-    }, []);
+    }, [dataStore]);
 
     const items = dataStore.basketContent.map((item) => (
       <div key={item.product.id}>
@@ -31,10 +28,9 @@ const BasketPage = inject("dataStore")(
 
     return (
       <div>
-        <div className="container grey">
-          <div>{items}</div>
-          <div className="">Subtotal: £{dataStore.basket.basketPrice}</div>
-        </div>
+        <div>{items}</div>
+        <div className="">Subtotal: £{dataStore.basket.basketPrice}</div>
+        <button>Procceed to Checkout</button>
       </div>
     );
   })

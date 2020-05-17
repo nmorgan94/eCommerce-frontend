@@ -44,6 +44,7 @@ app.get("/products/:id", function (req, res) {
         res.send(error);
       } else {
         var data = JSON.parse(body);
+        console.log(data);
         res.send(data);
       }
     }
@@ -100,8 +101,8 @@ app.post("/auth/login", function (req, res, next) {
         res.send(response.data);
       },
       (error) => {
-        console.log(error.response.data.message);
-        res.status(401).send(error.response.data.message);
+        console.log(error.response.data);
+        res.status(401).send(error.response.data);
       }
     );
 });
@@ -118,8 +119,8 @@ app.post("/auth/signup", function (req, res) {
         res.status(201).send(response.data);
       },
       (error) => {
-        console.log(error.response.data.message);
-        res.status(400).send(error.response.data.message);
+        console.log(error.response.data);
+        res.status(400).send(error.response.data);
       }
     );
 });
@@ -128,9 +129,10 @@ app.get("/user/me", function (req, res) {
   const authHeader = req.headers.authorization
     ? req.headers.authorization
     : null;
+
   axios
     .get("http://" + API_BASE_URL + ":" + API_BASE_PORT + "/user/me", {
-      headers: { Authorization: authHeader },
+      headers: { Authorization: "Bearer " + authHeader },
     })
     .then(
       (response) => {

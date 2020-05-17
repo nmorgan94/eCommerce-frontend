@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { observer, inject } from "mobx-react";
 import { useParams, useHistory } from "react-router-dom";
 
@@ -6,10 +6,19 @@ const ProductDetailPage = inject("dataStore")(
   observer(({ dataStore }) => {
     let history = useHistory();
     const { id } = useParams();
-    const getProducts = () => dataStore.getProductDetail(id);
+    const [productDetail, setProductDetail] = useState({});
+
     useEffect(() => {
-      getProducts();
-    }, []);
+      fetch(`/products/${id}`)
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          console.log(res);
+          setProductDetail(res);
+        })
+        .catch((err) => console.log(err));
+    }, [id]);
 
     const handleClick = () => {
       fetch(`/basket/add/${id}`, {
@@ -28,16 +37,12 @@ const ProductDetailPage = inject("dataStore")(
       <div>
         <div>
           <div>
-            <img
-              src={dataStore.productDetail.pictureUrl}
-              alt={dataStore.productDetail.name}
-            />
+            <img src={productDetail.pictureUrl} alt={productDetail.name} />
           </div>
           <div>
             <div>
-              <div>{dataStore.productDetail.name}</div>
-              {dataStore.productDetail.price}
-              <div></div>
+              <div>{productDetail.name}</div>
+              {productDetail.price}
             </div>
           </div>
         </div>

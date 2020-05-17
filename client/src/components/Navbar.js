@@ -1,11 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 
 const Navbar = inject("dataStore")(
   observer(({ dataStore }) => {
+    useEffect(() => {
+      dataStore.handleLogin();
+    }, [dataStore]);
     let history = useHistory();
 
     const handleLogout = () => {
@@ -19,7 +22,7 @@ const Navbar = inject("dataStore")(
       <nav>
         <NavWrapper>
           <NavbarLinks>
-            <Title to="/">{title}</Title>
+            <StyledNavLink to="/">{title}</StyledNavLink>
           </NavbarLinks>
           <NavbarLinks>
             {dataStore.isAuthenticated ? (
@@ -32,12 +35,12 @@ const Navbar = inject("dataStore")(
               <NavbarItem onClick={handleLogout}>logout</NavbarItem>
             ) : (
               <NavbarItem>
-                <NavLink to="/login">login</NavLink>
+                <StyledNavLink to="/login">login</StyledNavLink>
               </NavbarItem>
             )}
 
             <NavbarItem>
-              <NavLink to="/basket">shopping_cart</NavLink>
+              <StyledNavLink to="/basket">basket</StyledNavLink>
             </NavbarItem>
           </NavbarLinks>
         </NavWrapper>
@@ -45,10 +48,6 @@ const Navbar = inject("dataStore")(
     );
   })
 );
-
-const Title = styled(Link)`
-  text-decoration: none;
-`;
 
 const NavbarLinks = styled.div`
   display: flex;
@@ -58,6 +57,7 @@ const NavbarLinks = styled.div`
   margin: 0;
   text-decoration: none;
   width: 50%;
+  color: white;
 `;
 
 const NavbarItem = styled.div`
@@ -65,12 +65,14 @@ const NavbarItem = styled.div`
   text-decoration: none;
 `;
 
-const NavLink = styled(Link)`
+const StyledNavLink = styled(NavLink)`
   text-decoration: none;
+  color: palevioletred;
+  font-weight: bold;
 `;
 
 const NavWrapper = styled.nav`
-  background-color: #f0f8ff;
+  background-color: #000766;
   display: flex;
 `;
 

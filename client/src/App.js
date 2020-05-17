@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Navbar from "./components/Navbar";
 import "./App.css";
 import HomePage from "./pages/HomePage";
@@ -10,7 +10,7 @@ import CheckoutPage from "./pages/CheckoutPage";
 
 import { Route } from "react-router-dom";
 
-function App() {
+const App = () => {
   return (
     <>
       <Navbar />
@@ -40,6 +40,6 @@ function App() {
       </Route>
     </>
   );
-}
+};
 
 export default App;

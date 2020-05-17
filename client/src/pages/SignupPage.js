@@ -3,7 +3,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { observer, inject } from "mobx-react";
 import { useHistory } from "react-router-dom";
-import { ACCESS_TOKEN } from "../constants";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -23,15 +22,6 @@ const SignupPage = inject("dataStore")(
     const [userNameExists, setUserNameExists] = useState(false);
     const [emailExists, setEmailExists] = useState(false);
 
-    const handleErrors = (response) => {
-      if (response.message === "Username is already taken!") {
-        setUserNameExists(true);
-      }
-      if (response.message === "Email is already taken!") {
-        setEmailExists(true);
-      }
-    };
-
     return (
       <Formik
         initialValues={{
@@ -47,16 +37,6 @@ const SignupPage = inject("dataStore")(
           setUserNameExists(false);
           setEmailExists(false);
 
-          //   dataStore
-          //     .signup(signupRequest)
-          //     .then((response) => {
-          //       history.push(`/login`);
-          //     })
-          //     .catch((error) => {
-          //       console.log("caught");
-          //       handleErrors(error);
-          //     });
-
           fetch("/auth/signup", {
             method: "POST",
             body: signupRequest,
@@ -65,12 +45,17 @@ const SignupPage = inject("dataStore")(
             .then((response) => {
               return response.json();
             })
-            .then(() => {
-              history.push(`/login`);
+            .then((response) => {
+              if (response.message === "Username is already taken!") {
+                setUserNameExists(true);
+              } else if (response.message === "Email Address already in use!") {
+                setEmailExists(true);
+              } else {
+                history.push(`/login`);
+              }
             })
             .catch((error) => {
-              console.log("caught");
-              handleErrors(error);
+              console.log(error);
             });
         }}
         validationSchema={validationSchema}
