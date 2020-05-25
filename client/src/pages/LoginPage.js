@@ -1,10 +1,18 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { ACCESS_TOKEN } from "../constants";
 import { observer, inject } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import colours from "../styles/colours";
+import {
+  Button,
+  StyledErrorMessage,
+  StyledField,
+  FieldWrapper,
+} from "../styles/StyledComponents";
 
 const validationSchema = Yup.object().shape({
   usernameOrEmail: Yup.string().required("Required"),
@@ -16,10 +24,10 @@ const LoginPage = inject("dataStore")(
     let history = useHistory();
     const [badCredentials, setBadCredentials] = useState(false);
     return (
-      <div>
-        <p>
+      <LoginWrapper>
+        <h2>
           Please login or <Link to="/signup">signup</Link>{" "}
-        </p>
+        </h2>
         <Formik
           initialValues={{
             usernameOrEmail: "",
@@ -59,18 +67,41 @@ const LoginPage = inject("dataStore")(
                 Incorrect username or password
               </div>
             )}
-            <Field name="usernameOrEmail" />
-            <ErrorMessage name="usernameOrEmail" />
-            <br />
-            <Field name="password" />
-            <ErrorMessage name="password" />
-            <br />
-            <button type="submit">Submit</button>
+            <FieldWrapper>
+              <StyledField
+                name="usernameOrEmail"
+                placeholder="Username or Email"
+              />
+              <ErrorMessage
+                name="usernameOrEmail"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+            </FieldWrapper>
+            <FieldWrapper>
+              <StyledField
+                name="password"
+                placeholder="Password"
+                type="password"
+              />
+              <ErrorMessage
+                name="password"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+            </FieldWrapper>
+            <Button type="submit">Submit</Button>
           </Form>
         </Formik>
-      </div>
+      </LoginWrapper>
     );
   })
 );
+
+const LoginWrapper = styled.div`
+  width: 25%;
+  text-align: center;
+  border: 1px solid ${colours.lightGrey};
+  margin: 2rem auto;
+  border-radius: 1rem;
+`;
 
 export default LoginPage;

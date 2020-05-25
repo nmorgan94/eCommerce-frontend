@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { observer, inject } from "mobx-react";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import colours from "../styles/colours";
 
 const Navbar = inject("dataStore")(
   observer(({ dataStore }) => {
@@ -67,12 +68,13 @@ const NavbarItem = styled.div`
 
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
-  color: palevioletred;
+  color: white;
   font-weight: bold;
+  padding: 0 2rem;
 `;
 
 const NavWrapper = styled.nav`
-  background-color: #000766;
+  background-color: ${colours.lightBlue};
   display: flex;
 `;
 

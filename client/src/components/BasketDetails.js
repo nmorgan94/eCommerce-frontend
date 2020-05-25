@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { observer, inject } from "mobx-react";
+import { Redirect } from "react-router-dom";
 
 export const BasketDetails = inject("dataStore")(
   observer(({ dataStore }) => {
@@ -7,6 +8,10 @@ export const BasketDetails = inject("dataStore")(
       dataStore.getBasket();
     }, [dataStore]);
 
-    return <h1>{dataStore.basket.basketPrice}</h1>;
+    if (dataStore.basketContent.length === 0) {
+      return <Redirect to="/basket" />;
+    }
+
+    return <p>Your order today will cost £{dataStore.basket.basketPrice}</p>;
   })
 );

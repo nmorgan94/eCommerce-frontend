@@ -1,5 +1,9 @@
 import React, { useEffect } from "react";
 import { observer, inject } from "mobx-react";
+import styled from "styled-components";
+import colours from "../styles/colours";
+import { Button } from "../styles/StyledComponents";
+import { useHistory } from "react-router-dom";
 
 const BasketPage = inject("dataStore")(
   observer(({ dataStore }) => {
@@ -7,33 +11,64 @@ const BasketPage = inject("dataStore")(
       dataStore.getBasket();
     }, [dataStore]);
 
+    console.log(dataStore.basketContent.length);
+    let history = useHistory();
     const items = dataStore.basketContent.map((item) => (
-      <div key={item.product.id}>
-        <div className="">
-          <div className="card-image">
+      <ItemWrapper key={item.product.id}>
+        <div>
+          <h2>Shopping Basket</h2>
+          <ProductImageAndName>
             <img src={item.product.pictureUrl} alt={item.product.name} />
-            <span className="card-title">{item.product.name}</span>
-          </div>
-          <div className="card-content row white">
-            <div className="col s6">
+            <BasketInfo>{item.product.name}</BasketInfo>
+          </ProductImageAndName>
+          <div>
+            <BasketInfo>
               <b>Price: £{item.product.price}</b>
-            </div>
-            <div className="col s6">
+            </BasketInfo>
+            <BasketInfo>
               <b>Quantity: {item.quantity}</b>
-            </div>
+            </BasketInfo>
           </div>
         </div>
-      </div>
+      </ItemWrapper>
     ));
 
     return (
-      <div>
-        <div>{items}</div>
-        <div className="">Subtotal: £{dataStore.basket.basketPrice}</div>
-        <button>Procceed to Checkout</button>
-      </div>
+      <BasketWrapper>
+        {dataStore.basketContent.length === 0 ? (
+          <>
+            {console.log("bong")}
+            <h2>Your basket is empty.</h2>
+          </>
+        ) : (
+          <>
+            {console.log("bang")}
+            <div>{items}</div>
+            <BasketInfo>Subtotal: £{dataStore.basket.basketPrice}</BasketInfo>
+            <Button onClick={() => history.push("/Checkout")}>
+              Procceed to Checkout
+            </Button>
+          </>
+        )}
+      </BasketWrapper>
     );
   })
 );
+
+const ItemWrapper = styled.div`
+  border-bottom: 1px solid ${colours.lightGrey};
+`;
+
+const BasketWrapper = styled.div`
+  padding: 0 2rem;
+`;
+
+const ProductImageAndName = styled.div`
+  display: flex;
+`;
+
+const BasketInfo = styled.div`
+  padding: 1rem;
+`;
 
 export default BasketPage;

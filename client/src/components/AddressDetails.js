@@ -1,6 +1,12 @@
 import React from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
+import {
+  Button,
+  StyledErrorMessage,
+  StyledField,
+  FieldWrapper,
+} from "../styles/StyledComponents";
 
 const validationSchema = Yup.object().shape({
   firstName: Yup.string()
@@ -30,24 +36,42 @@ export const AddressDetails = () => (
     }}
   >
     <Form>
-      <Field name="firstName" />
-      <ErrorMessage name="firstName" />
-      <br />
-      <Field name="lastName" />
-      <ErrorMessage name="lastName" />
-
-      <br />
-      <Field name="address1" />
-      <ErrorMessage name="address1" />
-
-      <br />
-      <Field name="city" />
-      <ErrorMessage name="city" />
-      <br />
-      <Field name="postcode" />
-      <ErrorMessage name="postcode" />
-      <br />
-      <button type="submit">Pay Now</button>
+      <FieldWrapper>
+        <StyledField name="firstName" placeholder="First Name" />
+        <ErrorMessage
+          name="firstName"
+          render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+        />
+      </FieldWrapper>
+      <FieldWrapper>
+        <StyledField name="lastName" placeholder="Last Name" />
+        <ErrorMessage
+          name="lastName"
+          render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+        />
+      </FieldWrapper>
+      <FieldWrapper>
+        <StyledField name="address1" placeholder="Address Line 1" />
+        <ErrorMessage
+          name="address1"
+          render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+        />
+      </FieldWrapper>
+      <FieldWrapper>
+        <StyledField name="city" placeholder="City" />
+        <ErrorMessage
+          name="city"
+          render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+        />
+      </FieldWrapper>
+      <FieldWrapper>
+        <StyledField name="postcode" placeholder="Post Code" />
+        <ErrorMessage
+          name="postcode"
+          render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+        />
+      </FieldWrapper>
+      <Button type="submit">Pay Now</Button>
     </Form>
   </Formik>
 );

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { observer, inject } from "mobx-react";
 import { useParams, useHistory } from "react-router-dom";
+import styled from "styled-components";
+import { Button } from "../styles/StyledComponents";
 
 const ProductDetailPage = inject("dataStore")(
   observer(({ dataStore }) => {
@@ -20,8 +22,8 @@ const ProductDetailPage = inject("dataStore")(
         .catch((err) => console.log(err));
     }, [id]);
 
-    const handleClick = () => {
-      fetch(`/basket/add/${id}`, {
+    const handleClick = async () => {
+      await fetch(`/basket/add/${id}`, {
         method: "POST",
       })
         .then((data) => {
@@ -34,22 +36,39 @@ const ProductDetailPage = inject("dataStore")(
     };
 
     return (
-      <div>
+      <ProductWrapper>
         <div>
           <div>
-            <img src={productDetail.pictureUrl} alt={productDetail.name} />
+            <ImageWrapper
+              src={productDetail.pictureUrl}
+              alt={productDetail.name}
+            />
           </div>
           <div>
             <div>
-              <div>{productDetail.name}</div>
-              {productDetail.price}
+              <ProdctDetails>{productDetail.name}</ProdctDetails>
+              <ProdctDetails>£{productDetail.price}</ProdctDetails>
             </div>
           </div>
         </div>
-        <button onClick={handleClick}>Add To Basket</button>
-      </div>
+        <Button onClick={handleClick}>Add To Basket</Button>
+      </ProductWrapper>
     );
   })
 );
+
+const ProductWrapper = styled.div`
+  text-align: center;
+  padding: 2rem;
+`;
+
+const ProdctDetails = styled.div`
+  padding: 1rem;
+`;
+
+const ImageWrapper = styled.img`
+  height: 80%;
+  width: 80%;
+`;
 
 export default ProductDetailPage;

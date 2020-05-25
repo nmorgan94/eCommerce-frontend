@@ -1,8 +1,16 @@
 import React, { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { observer, inject } from "mobx-react";
 import { useHistory } from "react-router-dom";
+import styled from "styled-components";
+import colours from "../styles/colours";
+import {
+  Button,
+  StyledErrorMessage,
+  StyledField,
+  FieldWrapper,
+} from "../styles/StyledComponents";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("Required"),
@@ -23,68 +31,109 @@ const SignupPage = inject("dataStore")(
     const [emailExists, setEmailExists] = useState(false);
 
     return (
-      <Formik
-        initialValues={{
-          name: "",
-          username: "",
-          email: "",
-          password: "",
-          passwordConfirm: "",
-        }}
-        onSubmit={(values) => {
-          const signupRequest = JSON.stringify(values);
+      <SignUpWrapper>
+        <h2>Create account</h2>
+        <Formik
+          initialValues={{
+            name: "",
+            username: "",
+            email: "",
+            password: "",
+            passwordConfirm: "",
+          }}
+          onSubmit={(values) => {
+            const signupRequest = JSON.stringify(values);
 
-          setUserNameExists(false);
-          setEmailExists(false);
+            setUserNameExists(false);
+            setEmailExists(false);
 
-          fetch("/auth/signup", {
-            method: "POST",
-            body: signupRequest,
-            headers: { "Content-Type": "application/json" },
-          })
-            .then((response) => {
-              return response.json();
+            fetch("/auth/signup", {
+              method: "POST",
+              body: signupRequest,
+              headers: { "Content-Type": "application/json" },
             })
-            .then((response) => {
-              if (response.message === "Username is already taken!") {
-                setUserNameExists(true);
-              } else if (response.message === "Email Address already in use!") {
-                setEmailExists(true);
-              } else {
-                history.push(`/login`);
-              }
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }}
-        validationSchema={validationSchema}
-      >
-        <Form>
-          <Field name="name" />
-          <ErrorMessage name="name" />
-          <br />
-          <Field name="username" />
-          <ErrorMessage name="username" />
-          {userNameExists && <div>Username already exsists</div>}
-          <br />
-          <Field name="email" />
-          <ErrorMessage name="email" />
+              .then((response) => {
+                return response.json();
+              })
+              .then((response) => {
+                if (response.message === "Username is already taken!") {
+                  setUserNameExists(true);
+                } else if (
+                  response.message === "Email Address already in use!"
+                ) {
+                  setEmailExists(true);
+                } else {
+                  history.push(`/login`);
+                }
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          }}
+          validationSchema={validationSchema}
+        >
+          <Form>
+            <FieldWrapper>
+              <StyledField name="name" placeholder="Your Name" />
+              <ErrorMessage
+                name="name"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+            </FieldWrapper>
 
-          {emailExists && <div>Email already exsists</div>}
-          <br />
-          <Field name="password" />
-          <ErrorMessage name="password" />
-          <br />
-          <Field name="passwordConfirm" />
-          <ErrorMessage name="passwordConfirm" />
-          <br />
+            <FieldWrapper>
+              <StyledField
+                name="username"
+                placeholder="Choose your Usernname"
+              />
+              <ErrorMessage
+                name="username"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+              {userNameExists && <div>Username already exsists</div>}
+            </FieldWrapper>
 
-          <button type="submit">Submit</button>
-        </Form>
-      </Formik>
+            <FieldWrapper>
+              <StyledField name="email" placeholder="Your Email" />
+              <ErrorMessage
+                name="email"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+
+              {emailExists && <div>Email already exsists</div>}
+            </FieldWrapper>
+            <FieldWrapper>
+              <StyledField name="password" placeholder="Password" />
+              <ErrorMessage
+                name="password"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+            </FieldWrapper>
+            <FieldWrapper>
+              <StyledField
+                name="passwordConfirm"
+                placeholder="Re-enter your Password"
+              />
+              <ErrorMessage
+                name="passwordConfirm"
+                render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
+              />
+            </FieldWrapper>
+
+            <Button type="submit">Submit</Button>
+          </Form>
+        </Formik>
+      </SignUpWrapper>
     );
   })
 );
+
+const SignUpWrapper = styled.div`
+  width: 25%;
+  text-align: center;
+  border: 1px solid ${colours.lightGrey};
+  border-radius: 1rem;
+  margin: 2rem auto;
+`;
 
 export default SignupPage;
