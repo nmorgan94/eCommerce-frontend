@@ -1,11 +1,11 @@
-import express from "express";
-import path from "path";
-import bodyParser from "body-parser";
-import request from "request";
-import axios from "axios";
+const express = require("express");
+const path = require("path");
+const bodyParser = require("body-parser");
+const request = require("request");
+const axios = require("axios");
 
 const app = express();
-const __dirname = path.resolve();
+__dirname = path.resolve();
 
 let API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "localhost";
 let API_BASE_PORT = process.env.REACT_APP_API_PORT || "8080";
@@ -51,14 +51,16 @@ app.get("/products/:id", function (req, res) {
   );
 });
 
-app.post("/basket/add/:id", function (req, res) {
+app.post("/basket/add/:productId/:basketId", function (req, res) {
   request.post(
     "http://" +
       API_BASE_URL +
       ":" +
       API_BASE_PORT +
       "/basket/add/" +
-      req.params.id,
+      req.params.productId +
+      "/" +
+      req.params.basketId,
     (error, response, body) => {
       if (error) {
         res.send(error);

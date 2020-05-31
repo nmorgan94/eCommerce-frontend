@@ -103,7 +103,11 @@ const SignupPage = inject("dataStore")(
               {emailExists && <div>Email already exsists</div>}
             </FieldWrapper>
             <FieldWrapper>
-              <StyledField name="password" placeholder="Password" />
+              <StyledField
+                name="password"
+                placeholder="Password"
+                type="password"
+              />
               <ErrorMessage
                 name="password"
                 render={(msg) => <StyledErrorMessage>{msg}</StyledErrorMessage>}
@@ -113,6 +117,7 @@ const SignupPage = inject("dataStore")(
               <StyledField
                 name="passwordConfirm"
                 placeholder="Re-enter your Password"
+                type="password"
               />
               <ErrorMessage
                 name="passwordConfirm"

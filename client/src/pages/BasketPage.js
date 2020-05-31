@@ -13,10 +13,10 @@ const BasketPage = inject("dataStore")(
 
     console.log(dataStore.basketContent.length);
     let history = useHistory();
+
     const items = dataStore.basketContent.map((item) => (
       <ItemWrapper key={item.product.id}>
         <div>
-          <h2>Shopping Basket</h2>
           <ProductImageAndName>
             <img src={item.product.pictureUrl} alt={item.product.name} />
             <BasketInfo>{item.product.name}</BasketInfo>
@@ -35,14 +35,13 @@ const BasketPage = inject("dataStore")(
 
     return (
       <BasketWrapper>
+        <h2>Shopping Basket</h2>
         {dataStore.basketContent.length === 0 ? (
           <>
-            {console.log("bong")}
             <h2>Your basket is empty.</h2>
           </>
         ) : (
           <>
-            {console.log("bang")}
             <div>{items}</div>
             <BasketInfo>Subtotal: £{dataStore.basket.basketPrice}</BasketInfo>
             <Button onClick={() => history.push("/Checkout")}>

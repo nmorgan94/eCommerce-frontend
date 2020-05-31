@@ -3,11 +3,14 @@ import { observer, inject } from "mobx-react";
 import { useParams, useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { Button } from "../styles/StyledComponents";
+import Cookies from "universal-cookie";
 
 const ProductDetailPage = inject("dataStore")(
   observer(({ dataStore }) => {
     let history = useHistory();
     const { id } = useParams();
+    const cookies = new Cookies();
+    const basketId = cookies.get("cookieID");
     const [productDetail, setProductDetail] = useState({});
 
     useEffect(() => {
@@ -23,7 +26,7 @@ const ProductDetailPage = inject("dataStore")(
     }, [id]);
 
     const handleClick = async () => {
-      await fetch(`/basket/add/${id}`, {
+      await fetch(`/basket/add/${id}/${basketId}`, {
         method: "POST",
       })
         .then((data) => {

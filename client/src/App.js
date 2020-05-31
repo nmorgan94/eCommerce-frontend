@@ -7,8 +7,11 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import CheckoutPage from "./pages/CheckoutPage";
-
 import { Route } from "react-router-dom";
+import Cookies from "universal-cookie";
+
+const cookies = new Cookies();
+cookies.set("cookieID", "1", { path: "/" });
 
 const App = () => {
   return (
