@@ -14,7 +14,7 @@ const ProductDetailPage = inject("dataStore")(
     const [productDetail, setProductDetail] = useState({});
 
     useEffect(() => {
-      fetch(`/products/${id}`)
+      fetch(`/api/products/${id}`)
         .then((res) => {
           return res.json();
         })

@@ -14,8 +14,8 @@ class DataStore {
   basketContent = [];
 
   handleLogin = () => {
-    if (!localStorage.getItem(ACCESS_TOKEN)) {
-      return "No access token set.";
+    if (!this.isAuthenticated) {
+      return "Not Authenticated";
     } else {
       fetch("/user/me", {
         headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },

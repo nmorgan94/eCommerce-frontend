@@ -17,9 +17,9 @@ app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "..", "client"));
 });
 
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
   request.get(
-    "http://" + API_BASE_URL + ":" + API_BASE_PORT + "/products",
+    "http://" + API_BASE_URL + ":" + API_BASE_PORT + "/api/products",
     (error, response, body) => {
       if (error) {
         res.send(error);
@@ -31,13 +31,13 @@ app.get("/products", (req, res) => {
   );
 });
 
-app.get("/products/:id", function (req, res) {
+app.get("/api/products/:id", function (req, res) {
   request.get(
     "http://" +
       API_BASE_URL +
       ":" +
       API_BASE_PORT +
-      "/products/" +
+      "/api/products/" +
       req.params.id,
     (error, response, body) => {
       if (error) {
@@ -57,7 +57,7 @@ app.post("/basket/add/:productId/:basketId", function (req, res) {
       API_BASE_URL +
       ":" +
       API_BASE_PORT +
-      "/basket/add/" +
+      "/api/basket/add/" +
       req.params.productId +
       "/" +
       req.params.basketId,
@@ -78,7 +78,7 @@ app.get("/basket/baskets/:id", function (req, res) {
       API_BASE_URL +
       ":" +
       API_BASE_PORT +
-      "/basket/baskets/" +
+      "/api/basket/baskets/" +
       req.params.id,
     (error, response, body) => {
       if (error) {
@@ -133,7 +133,7 @@ app.get("/user/me", function (req, res) {
     : null;
 
   axios
-    .get("http://" + API_BASE_URL + ":" + API_BASE_PORT + "/user/me", {
+    .get("http://" + API_BASE_URL + ":" + API_BASE_PORT + "/api/user/me", {
       headers: { Authorization: "Bearer " + authHeader },
     })
     .then(
@@ -156,7 +156,7 @@ app.get("/basket/baskets/:id", function (req, res) {
         API_BASE_URL +
         ":" +
         API_BASE_PORT +
-        "/basket/baskets" +
+        "/api/basket/baskets/" +
         req.params.id
     )
     .then(function (response) {

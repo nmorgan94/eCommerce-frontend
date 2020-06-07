@@ -8,7 +8,7 @@ export const Products = inject("dataStore")(
     const [products, setProducts] = useState([]);
 
     useEffect(() => {
-      fetch("/products")
+      fetch("/api/products")
         .then((res) => {
           return res.json();
         })
@@ -19,21 +19,34 @@ export const Products = inject("dataStore")(
         .catch((err) => console.log(err));
     }, []);
 
-    const listItems = products.map((item) => (
-      <Product key={item.id}>
-        <StyledLink to={`/products/${item.id}`}>
-          <ItemName>{item.name}</ItemName>
-          <div>
-            <img src={item.pictureUrl} alt={item.name} />
-          </div>
-          <div>
-            <p>Price: {item.price}$</p>
-          </div>
-        </StyledLink>
-      </Product>
-    ));
+    let listItems = [];
+    if (products.length !== undefined) {
+      listItems = products.map((item) => (
+        <Product key={item.id}>
+          <StyledLink to={`/products/${item.id}`}>
+            <ItemName>{item.name}</ItemName>
+            <div>
+              <img src={item.pictureUrl} alt={item.name} />
+            </div>
+            <div>
+              <p>Price: {item.price}$</p>
+            </div>
+          </StyledLink>
+        </Product>
+      ));
+    }
 
-    return <ProductWrapper>{listItems}</ProductWrapper>;
+    return (
+      <>
+        {listItems.length === 0 ? (
+          <>
+            <h2>No Products.</h2>
+          </>
+        ) : (
+          <ProductWrapper>{listItems}</ProductWrapper>
+        )}
+      </>
+    );
   })
 );
 

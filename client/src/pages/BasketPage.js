@@ -11,32 +11,34 @@ const BasketPage = inject("dataStore")(
       dataStore.getBasket();
     }, [dataStore]);
 
-    console.log(dataStore.basketContent.length);
     let history = useHistory();
 
-    const items = dataStore.basketContent.map((item) => (
-      <ItemWrapper key={item.product.id}>
-        <div>
-          <ProductImageAndName>
-            <img src={item.product.pictureUrl} alt={item.product.name} />
-            <BasketInfo>{item.product.name}</BasketInfo>
-          </ProductImageAndName>
+    let items = [];
+    if (dataStore.basketContent !== undefined) {
+      items = dataStore.basketContent.map((item) => (
+        <ItemWrapper key={item.product.id}>
           <div>
-            <BasketInfo>
-              <b>Price: £{item.product.price}</b>
-            </BasketInfo>
-            <BasketInfo>
-              <b>Quantity: {item.quantity}</b>
-            </BasketInfo>
+            <ProductImageAndName>
+              <img src={item.product.pictureUrl} alt={item.product.name} />
+              <BasketInfo>{item.product.name}</BasketInfo>
+            </ProductImageAndName>
+            <div>
+              <BasketInfo>
+                <b>Price: £{item.product.price}</b>
+              </BasketInfo>
+              <BasketInfo>
+                <b>Quantity: {item.quantity}</b>
+              </BasketInfo>
+            </div>
           </div>
-        </div>
-      </ItemWrapper>
-    ));
+        </ItemWrapper>
+      ));
+    }
 
     return (
       <BasketWrapper>
         <h2>Shopping Basket</h2>
-        {dataStore.basketContent.length === 0 ? (
+        {items.length === 0 ? (
           <>
             <h2>Your basket is empty.</h2>
           </>
@@ -44,7 +46,7 @@ const BasketPage = inject("dataStore")(
           <>
             <div>{items}</div>
             <BasketInfo>Subtotal: £{dataStore.basket.basketPrice}</BasketInfo>
-            <Button onClick={() => history.push("/Checkout")}>
+            <Button onClick={() => history.push("/checkout")}>
               Procceed to Checkout
             </Button>
           </>
