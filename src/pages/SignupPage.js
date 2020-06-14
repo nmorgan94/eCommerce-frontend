@@ -47,7 +47,7 @@ const SignupPage = inject("dataStore")(
             setUserNameExists(false);
             setEmailExists(false);
 
-            fetch("/auth/signup", {
+            fetch("/api/auth/signup", {
               method: "POST",
               body: signupRequest,
               headers: { "Content-Type": "application/json" },

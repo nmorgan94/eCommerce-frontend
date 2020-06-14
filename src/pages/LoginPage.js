@@ -37,7 +37,7 @@ const LoginPage = inject("dataStore")(
             const loginRequest = JSON.stringify(values);
             console.log("login request: ", loginRequest);
 
-            fetch("/auth/login", {
+            fetch("/api/auth/signin", {
               method: "POST",
               body: loginRequest,
               headers: { "Content-Type": "application/json" },

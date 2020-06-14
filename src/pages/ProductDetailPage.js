@@ -26,7 +26,7 @@ const ProductDetailPage = inject("dataStore")(
     }, [id]);
 
     const handleClick = async () => {
-      await fetch(`/basket/add/${id}/${basketId}`, {
+      await fetch(`/api/basket/add/${id}/${basketId}`, {
         method: "POST",
       })
         .then((data) => {

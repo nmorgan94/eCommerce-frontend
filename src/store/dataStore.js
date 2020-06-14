@@ -14,22 +14,23 @@ class DataStore {
   basketContent = [];
 
   handleLogin = () => {
-    if (!this.isAuthenticated) {
-      return "Not Authenticated";
-    } else {
-      fetch("/user/me", {
-        headers: { Authorization: localStorage.getItem(ACCESS_TOKEN) },
+    if (!localStorage.getItem(ACCESS_TOKEN)) return;
+    fetch("/api/user/me", {
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem(ACCESS_TOKEN),
+      },
+    })
+      .then((response) => {
+        return response.json();
       })
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          console.log(data);
-          this.currentUser = data;
+      .then((data) => {
+        console.log(data);
+        this.currentUser = data;
+        if (data.error !== "Unauthorized") {
           this.isAuthenticated = true;
-        })
-        .catch(() => console.log("users api call failed"));
-    }
+        }
+      })
+      .catch(() => console.log("users api call failed"));
   };
 
   handleLogoutState = () => {
@@ -41,7 +42,7 @@ class DataStore {
 
   getBasket = () => {
     let id = cookies.get("cookieID");
-    fetch(`/basket/baskets/${id}`)
+    fetch(`/api/basket/baskets/${id}`)
       .then((response) => {
         return response.json();
       })

@@ -33,7 +33,9 @@ const Navbar = inject("dataStore")(
             ) : null}
 
             {dataStore.isAuthenticated ? (
-              <NavbarItem onClick={handleLogout}>logout</NavbarItem>
+              <ClickableNavbarItem onClick={handleLogout}>
+                logout
+              </ClickableNavbarItem>
             ) : (
               <NavbarItem>
                 <StyledNavLink to="/login">login</StyledNavLink>
@@ -64,6 +66,13 @@ const NavbarLinks = styled.div`
 const NavbarItem = styled.div`
   padding: 14px 16px;
   text-decoration: none;
+`;
+
+const ClickableNavbarItem = styled.div`
+  padding: 14px 16px;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: bold;
 `;
 
 const StyledNavLink = styled(NavLink)`

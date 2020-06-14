@@ -1,0 +1,6 @@
+Options -MultiViews
+    RewriteEngine On
+    RewriteCond /api/%{REQUEST_URI} !=f
+    RewriteRule ^api/(.*) http://${REACT_APP_API_BASE_URL}:8080/api/$1 [P,L]
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.html [QSA,L]
