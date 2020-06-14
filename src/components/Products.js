@@ -1,54 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { observer, inject } from "mobx-react";
 import styled from "styled-components";
 
-export const Products = inject("dataStore")(
-  observer(({ dataStore }) => {
-    const [products, setProducts] = useState([]);
+export const Products = () => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {
+        console.log(res);
+        setProducts(res);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
-    useEffect(() => {
-      fetch("/api/products")
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          console.log(res);
-          setProducts(res);
-        })
-        .catch((err) => console.log(err));
-    }, []);
+  let listItems = [];
+  if (products.length !== undefined) {
+    listItems = products.map((item) => (
+      <Product key={item.id}>
+        <StyledLink to={`/products/${item.id}`}>
+          <ItemName>{item.name}</ItemName>
+          <div>
+            <img src={item.pictureUrl} alt={item.name} />
+          </div>
+          <div>
+            <p>Price: {item.price}$</p>
+          </div>
+        </StyledLink>
+      </Product>
+    ));
+  }
 
-    let listItems = [];
-    if (products.length !== undefined) {
-      listItems = products.map((item) => (
-        <Product key={item.id}>
-          <StyledLink to={`/products/${item.id}`}>
-            <ItemName>{item.name}</ItemName>
-            <div>
-              <img src={item.pictureUrl} alt={item.name} />
-            </div>
-            <div>
-              <p>Price: {item.price}$</p>
-            </div>
-          </StyledLink>
-        </Product>
-      ));
-    }
-
-    return (
-      <>
-        {listItems.length === 0 ? (
-          <>
-            <h2>No Products.</h2>
-          </>
-        ) : (
-          <ProductWrapper>{listItems}</ProductWrapper>
-        )}
-      </>
-    );
-  })
-);
+  return (
+    <>
+      {listItems.length === 0 ? (
+        <>
+          <h2>No Products.</h2>
+        </>
+      ) : (
+        <ProductWrapper>{listItems}</ProductWrapper>
+      )}
+    </>
+  );
+};
 
 const Product = styled.div`
   background-color: white;
